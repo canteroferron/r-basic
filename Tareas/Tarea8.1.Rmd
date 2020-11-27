@@ -1,0 +1,150 @@
+---
+title: "Tema8.1"
+author: "jcantero"
+date: "28/10/2020"
+output: html_document
+---
+
+
+Carga el conjunto de datos de la carpeta data llamado grades.txt en R y responde a las siguientes preguntas
+
+```{r}
+df = read.table("../data/grades.txt")
+head(df)
+str(df)
+```
+
+Preguntas de esta tarea
+
+1. Calcula la media, la mediana y la moda redondeada a dos cifras decimales de las notas numéricas de los exámenes tanto de forma conjunta como por estudio universitario. ¿En qué grupo observamos la nota más alta? ¿Qué grupo está por encima de la media de estudiantes?
+
+Todas las notas:
+```{r}
+notas = df$nota;
+media = round(mean(notas), 2) # mean
+mediana = round(median(notas), 2)
+moda = as.numeric(names(which(table(notas)==max(table(notas))))) #La moda
+```
+
+La medias es `r media`, la mediana es `r mediana` y la moda es `r moda`
+
+Notas de Informaticos:
+```{r}
+notas = round(df[df$estudio == 'Informatica',]$nota, 2)
+media = round(mean(notas), 2) # mean
+mediana = round(median(notas), 2)
+moda = as.numeric(names(which(table(notas)==max(table(notas)))))  #La moda
+```
+
+La medias es `r media`, la mediana es `r mediana` y la moda es `r moda`
+
+Notas de Matematicos:
+```{r}
+notas = round(df[df$estudio == 'Mates',]$nota, 2)
+media = round(mean(notas), 2) # mean
+mediana = round(median(notas), 2)
+moda = as.numeric(names(which(table(notas)==max(table(notas)))))  #La moda
+```
+
+La medias es `r media`, la mediana es `r mediana` y la moda es `r moda`
+
+Notas de Telematicos:
+```{r}
+notas = round(df[df$estudio == 'Telematica',]$nota, 2)
+media = round(mean(notas), 2) # mean
+mediana = round(median(notas), 2)
+moda = as.numeric(names(which(table(notas)==max(table(notas)))))  #La moda
+```
+
+La medias es `r media`, la mediana es `r mediana` y la moda es `r moda`
+
+Notas de Industriales:
+```{r}
+notas = round(df[df$estudio == 'Industrial',]$nota, 2)
+media = round(mean(notas), 2) # mean
+mediana = round(median(notas), 2)
+moda = as.numeric(names(which(table(notas)==max(table(notas)))))  #La moda
+```
+
+La medias es `r media`, la mediana es `r mediana` y la moda es `r moda`
+
+Por encima de la media estan los informaticos y los Matematicos.
+
+
+2. ¿En qué grupo observamos más variación de notas? Justifica tu respuesta
+
+
+Informaticos:
+```{r}
+notas = round(df[df$estudio == 'Informatica',]$nota, 2)
+media = round(mean(notas), 2) # mean
+variacion = (sd(notas)/media) * 100
+```
+
+Variacion es de `r variacion`%
+
+Matematicos:
+```{r}
+notas = round(df[df$estudio == 'Mates',]$nota, 2)
+media = round(mean(notas), 2) # mean
+variacion = (sd(notas)/media) * 100
+```
+
+Variacion es de `r variacion`%
+
+Telematicos:
+```{r}
+notas = round(df[df$estudio == 'Telematica',]$nota, 2)
+media = round(mean(notas), 2) # mean
+variacion = (sd(notas)/media) * 100
+```
+
+Variacion es de `r variacion`%
+
+Industriales:
+```{r}
+notas = round(df[df$estudio == 'Industrial',]$nota, 2)
+media = round(mean(notas), 2) # mean
+variacion = (sd(notas)/media) * 100
+```
+
+Variacion es de `r variacion`%
+
+El grupo de industriales es el que tiene mas variación seguido del geupo de telematicos
+
+
+3. ¿Hay mucha diferencia entre el grupo que has respondido en el ejercicio 1 y en el ejercicio 2? Intenta dar una explicación objetiva del suceso
+
+Los gupos que esta por debajo de la media tienen una variación mas acentuada.
+
+4. Dibuja en un único gráfico los cuatro diagramas de caja, uno para cada grupo. Añade así mismo la nota media, pon nombre, título y color al gráfico para documentar el gráfico correctamente.
+
+```{r}
+boxplot(
+  nota~estudio,
+  data = df,
+  col = c("lightblue","pink2","pink3","cyan3" ), 
+  xlab = "Carreras Universitarias", 
+  ylab = "Notas",
+  main = "Gráfico de Cajas")
+
+medias = aggregate(nota~estudio, data = df, FUN = mean)
+points(medias, col = "black", pch = 20)
+```
+
+5. ¿Observas algunos valores atípicos en el boxplot anterior? ¿A qué grupo pertence?
+
+Si existe varios outliers, y los infomaticos tiene pocas notas por deajo del primer percentil.
+
+7. Indica a partir del boxplot anterior en qué grupo observamos más variedad de notas.
+
+En el de mates ya que su caja y bigotes son mas grandes.
+
+8. En base a todo lo anterior, ¿puedes afirmar de forma estadística que el examen de carrera ha ido mejor en algún estudio que en los demás?
+
+La carrera de informatica tiene el mayor numero de notas altas.
+
+
+
+
+

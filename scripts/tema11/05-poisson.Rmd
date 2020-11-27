@@ -32,7 +32,7 @@ import matplotlib.pyplot as plt
 
 
 fig, ax = plt.subplots(1,1)
-mu = 5
+mu = 0.8
 mean, var, skew, kurt = poisson.stats(mu, moments = 'mvsk')
 print("Media %f"%mean)
 print("Varianza %f"%var)

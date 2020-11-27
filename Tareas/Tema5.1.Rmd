@@ -1,0 +1,63 @@
+---
+title: "Tema5.1"
+author: "jcantero"
+date: "14/10/2020"
+output: html_document
+---
+
+Carga en R o en Python el CSV de la web http://winterolympicsmedals.com/medals.csv y responde a las preguntas de la tarea.
+
+```{r}
+df = read.csv("http://winterolympicsmedals.com/medals.csv", header = TRUE)
+head(df)
+str(df)
+```
+
+Preguntas de esta tarea
+
+1. ¿Cuantos deportistas aparecen en el data frame?
+
+```{r}
+nrow(df)
+```
+
+2. ¿Cuantos han ganado medallas de oro, cuantos de plata y cuantos de bronce?
+
+```{r}
+nrow(df[df$Medal == "Gold", ])
+nrow(df[df$Medal == "Silver", ])
+nrow(df[df$Medal == "Bronze", ])
+```
+
+3. ¿En cuantos lugares se han hecho olimpiadas de invierno?
+
+```{r}
+library(plyr)
+count(df$City)
+```
+
+
+4. ¿Cuantos hombres y cuantas mujeres hay?
+
+```{r}
+nrow(df[df$Event.gender == "M", ])
+nrow(df[df$Event.gender == "W", ])
+```
+
+5. ¿En qué año participaron más deportistas?
+
+```{r}
+df2 = count(df$Year)
+df2[df2$freq == max(df2$freq), ]
+```
+
+6. El campo NOC indica el país del ganador de la medalla. ¿Qué país puede presumir de haber ganado más medallas de oro en los juegos de invierno entre 1960 y 1996?
+
+```{r}
+df3 = df[df$Year >= 1960 & df$Year <= 1996, ]
+df3FrecuencyNOC = count(df$NOC)
+df3FrecuencyNOC[df3FrecuencyNOC$freq == max(df3FrecuencyNOC$freq), ]
+print(df3FrecuencyNOC[df3FrecuencyNOC$freq == max(df3FrecuencyNOC$freq), ])
+```
+
+

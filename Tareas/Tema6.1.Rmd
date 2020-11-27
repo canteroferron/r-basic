@@ -1,0 +1,123 @@
+---
+title: "Tema6.1"
+author: "jcantero"
+date: "20/10/2020"
+output: html_document
+---
+
+Instala y carga el paquete MASS.
+
+En el hay una tabla de datos llamada birthwt sobre factores que pueden incidir en el peso de los niños al nacer.
+
+```{r}
+library(MASS)
+```
+
+1. Utiliza str() y head() para explorar la estructura, y con help(), mirar el significado de cada variable.
+
+```{r}
+str(birthwt)
+head(birthwt)
+help("birthwt")
+```
+
+2. Calcula una tabla de frecuencias relativas marginales de los pares (raza de la madre, peso inferior a 2.5 kg o no) que permita ver si la raza de la madre influye en el peso del bebé.
+
+```{r}
+func_bwt <- function(x) {
+  ret = ""
+  if (x > 2500) {
+    ret = ">2500"
+  } else {
+    ret = "<=2500"
+  }
+    
+  return(ret) 
+}
+btw = sapply(birthwt$bwt, func_bwt)
+fa2 = table(birthwt$race, btw)
+
+dimnames(fa2) = list(
+  Raza = c("Blanca", "Color", "Otros"),
+  Peso = c("<= 2.5 KG", "> 2.5 KG")
+)
+fa2
+```
+
+
+3. Dibuja un diagrama de mosaico de la tabla del ejercicio anterior.
+
+```{r}
+plot(fa2, col = c("lightblue"), main = "Diagrama de Mosaico")
+```
+
+4. Dibuja un diagrama bidimensional de barras, con las barras organizadas en bloques, que permita visualizar la información de los ejercicios anteriores. Aprovecha para nombres adecuados a los bloques, colores a las barras, y añadir una leyenda que explique qué representa cada barra.
+
+```{r}
+barplot(fa2, beside = TRUE,
+        legend.text = TRUE, ylim = c(0, 80),
+        col = c("pink", "black", "yellow"), 
+        main = "Frecuencias absolutas del la raza con relacion al peso.")
+```
+
+5. ¿Se puede obtener alguna conclusión de la tabla y el diagrama de barras anterior? Argumenta tu respuesta
+Si las mujeres de raza blanca tiene hijos con mayor peso.
+
+6. Repite los cuatro ejercicios anteriores para los pares (madre fumadora o no, peso inferior a 2.5 kg o no) y para los pares (madre hipertensa o no, peso inferior a 2.5 kg o no.
+
+```{r}
+func_binary <- function(x) {
+  ret = ""
+  if (x == 1) {
+    ret = "Si"
+  } else {
+    ret = "No"
+  }
+    
+  return(ret) 
+}
+
+smoke = sapply(birthwt$smoke, func_binary)
+fa3 = table(smoke, btw)
+dimnames(fa3) = list(
+  Fuma = c("No", "Si"),
+  Peso = c("<= 2.5 KG", "> 2.5 KG")
+)
+barplot(fa3, beside = TRUE,
+        legend.text = TRUE, ylim = c(0, 90),
+        col = c("black", "yellow"), 
+        main = "Frecuencias absolutas fumar con relacion al peso.")
+
+ht = sapply(birthwt$ht, func_binary)
+fa4 = table(smoke, ht)
+dimnames(fa4) = list(
+  Fuma = c("No", "Si"),
+  Peso = c("<= 2.5 KG", "> 2.5 KG")
+)
+barplot(fa4, beside = TRUE,
+        legend.text = TRUE, ylim = c(0, 120),
+        col = c("black", "yellow"), 
+        main = "Frecuencias absolutas hipertención con relacion al peso.")
+```
+
+7. Calcula una tabla de frecuencias relativas marginales de las ternas (raza de la madre, madre fumadora o no, peso inferior a 2.5 kg o no) que permita ver si la raza de la madre y su condición de fumadora o no fumadora influyen en el peso del bebé.
+
+```{r}
+fa5 = table(birthwt$race, smoke, btw)
+dimnames(fa5) = list(
+  Raza = c("Blanca", "Color", "Otros"),
+  Fuma = c("No", "Si"),
+  Peso = c("<= 2.5 KG", "> 2.5 KG")
+)
+fa5
+fr1 = prop.table(fa5)
+fr1
+```
+
+8. Dibuja un diagrama de mosaico de la tabla del ejercicio anterior.
+
+```{r}
+plot(fr1, col = c("lightblue"), main = "Diagrama de Mosaico")
+```
+
+

@@ -39,3 +39,7 @@ rsconnect/
 
 ##Deleted by JB 
 .DS_Store
+.vscode/settings.json
+
+##Pytho
+__pycache__/
